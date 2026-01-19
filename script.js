@@ -38,6 +38,8 @@ function filterCities() {
 
 
   let citiesChoice = document.querySelectorAll('.city');
+  let cityLat = [];
+  let cityLon = [];
   
   citiesChoice.forEach(city => {
     city.addEventListener('click', () => {
@@ -46,18 +48,25 @@ function filterCities() {
       .then(response => response.json())
       .then(data => {
         for (let m = 0; m < data.length; m++) {
-            weatherDiv.innerHTML = (`<p>Météo à ${city.textContent} : Température de ${data[m].current.temperature_2m}</p>`);
-        }
+          cityLat.push(data[m].latitude);
+          cityLon.push(data[m].longitude);
+        cities.forEach(city => {
+            if (cityLat.includes(city.lat) && cityLon.includes(city.lon)) {
+              weatherDiv.innerHTML = (`<p>Météo à ${city.textContent} : Temp : ${data[m].current.temperature_2m}</p>`);
+            }
+          }  
+        )}      
+      });
       })
       .catch(error => {
         return error;
-      });
-
-      });
-  });
+      })
+  })
 };
+    
+
+
+
 
 // TODO : requête AJAX vers Open-Meteo
-
-
 // TODO : affichage météo dans le DOM
