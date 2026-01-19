@@ -43,26 +43,27 @@ function filterCities() {
   
   citiesChoice.forEach(city => {
     city.addEventListener('click', () => {
+      citiesChoice.forEach(city => city.classList.remove('active'));
       city.classList.add('active');
       fetch('https://api.open-meteo.com/v1/forecast?latitude=48.8534,45.7485,43.297,44.8404,50.633&longitude=2.3488,4.8467,5.3811,-0.5805,3.0586&current=temperature_2m')
       .then(response => response.json())
       .then(data => {
-        for (let m = 0; m < data.length; m++) {
-          cityLat.push(data[m].latitude);
-          cityLon.push(data[m].longitude);
         cities.forEach(city => {
-            if (cityLat.includes(city.lat) && cityLon.includes(city.lon)) {
+          for (let m = 0; m < data.length; m++) {
+            if (data.latitude.includes(city.lat) && data.longitude.includes(city.lon)) {
               weatherDiv.innerHTML = (`<p>Météo à ${city.textContent} : Temp : ${data[m].current.temperature_2m}</p>`);
             }
           }  
-        )}      
-      });
+        }      
+      );
       })
       .catch(error => {
         return error;
       })
+    })
   })
 };
+
     
 
 
