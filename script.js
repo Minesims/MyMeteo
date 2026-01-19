@@ -38,8 +38,6 @@ function filterCities() {
 
 
   let citiesChoice = document.querySelectorAll('.city');
-  let cityLat = [];
-  let cityLon = [];
   
   citiesChoice.forEach(city => {
     city.addEventListener('click', () => {
