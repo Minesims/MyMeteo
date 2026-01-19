@@ -58,7 +58,7 @@ function filterCities() {
       // Puis je réenregistre la classe "active" sur l'élément actuellement
       city.classList.add('active');
 
-      // Je recherche 
+      // Je recherche les éléments identiques dans mon array et dans mes villes affichées pour récupérer les informations nécessaires
       let selectedCity = cities.find(browseCity => browseCity.name === city.textContent);
       
       // Je récupère les informations de l'API à chaque clic pour avoir les informations à jour
