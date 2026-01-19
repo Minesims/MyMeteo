@@ -45,6 +45,8 @@ function filterCities() {
 
   // J'enregistre mes éléments portant la classe "city"
   let citiesChoice = document.querySelectorAll('.city');
+
+  // Je défini au préalable une variable que j'appellerai au moment d'afficher la valeur
   let temp = 0.0;
 
   // J'enregistre l'évènement si l'utilisateur clique sur une ville proposée
@@ -53,7 +55,7 @@ function filterCities() {
 
       // A chaque nouveau clic je supprime la classe "active" des éléments précédemment sélectionnés
       citiesChoice.forEach(cityChoice => cityChoice.classList.remove('active'));
-      // Puis je réenregistre la classe "active" sur l'élément actuellmement
+      // Puis je réenregistre la classe "active" sur l'élément actuellement
       city.classList.add('active');
 
       // Je recherche 
