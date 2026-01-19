@@ -30,11 +30,12 @@ searchInput.addEventListener('keyup', ()=> {
 // TODO : gestion de la classe CSS active
 
 function filterCities() {
+  cityList.innerHTML = "";
   cities.forEach(city => {
       if (city.name.includes(input)) {
-        cityList.innerHTML = (`<li class="city">${city.name}</li>`);
+        cityList.innerHTML += (`<li class="city">${city.name}</li>`);
       }
-  })
+  });
 
 
   let citiesChoice = document.querySelectorAll('.city');
@@ -43,24 +44,26 @@ function filterCities() {
     city.addEventListener('click', () => {
       citiesChoice.forEach(city => city.classList.remove('active'));
       city.classList.add('active');
-      fetch('https://api.open-meteo.com/v1/forecast?latitude=48.8534,45.7485,43.297,44.8404,50.633&longitude=2.3488,4.8467,5.3811,-0.5805,3.0586&current=temperature_2m')
+
+      fetch('https://api.open-meteo.com/v1/forecast?latitude=48.85,45.75,43.3,44.84,50.63&longitude=2.35,4.85,5.37,-0.57,3.06&current=temperature_2m')
       .then(response => response.json())
       .then(data => {
+        console.log(data.length)
         cities.forEach(city => {
           for (let m = 0; m < data.length; m++) {
-            if (data.latitude.includes(city.lat) && data.longitude.includes(city.lon)) {
-              weatherDiv.innerHTML = (`<p>Météo à ${city.textContent} : Temp : ${data[m].current.temperature_2m}</p>`);
+            console.log(cities.indexOf('Paris'));
+            if (data[m].latitude == cities[m].lat) {
+              weatherDiv.innerHTML = `Météo pour ${city.textContent} : `
             }
-          }  
-        }      
-      );
-      })
-      .catch(error => {
-        return error;
+          }
+
+        })
       })
     })
   })
+
 };
+        
 
     
 
