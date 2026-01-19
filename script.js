@@ -33,9 +33,11 @@ function filterCities() {
 
   // Si la saisie de l'utilisateur correspond à une ville enregistrée, une nouvelle puce est créée pour afficher la ville
   cities.forEach(city => {
-      if (city.name.includes(input)) {
-        cityList.innerHTML += (`<li class="city">${city.name}</li>`);
-      }
+    if (input == "*") {
+      cityList.innerHTML += (`<li class="city">${city.name}</li>`);   
+    } else if (city.name.includes(input)) {
+    cityList.innerHTML += (`<li class="city">${city.name}</li>`);
+    }
   });
 
   // J'enregistre mes éléments portant la classe "city"
