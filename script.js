@@ -31,10 +31,13 @@ function filterCities() {
   // Je réinitialise le HTML de ma liste de ville pour ne pas avoir de doublons
   cityList.innerHTML = "";
 
-  // Si la saisie de l'utilisateur correspond à une ville enregistrée, une nouvelle puce est créée pour afficher la ville
   cities.forEach(city => {
+
+    // Bonus : Si l'utilisateur connait le code secret "*", il affiche toutes les villes disponibles dans la liste
     if (input == "*") {
       cityList.innerHTML += (`<li class="city">${city.name}</li>`);   
+
+    // Si la saisie de l'utilisateur correspond à une ville enregistrée, une nouvelle puce est créée pour afficher la ville
     } else if (city.name.includes(input)) {
     cityList.innerHTML += (`<li class="city">${city.name}</li>`);
     }
@@ -60,6 +63,8 @@ function filterCities() {
       fetch(`https://api.open-meteo.com/v1/forecast?latitude=${selectedCity.lat}&longitude=${selectedCity.lon}&current=temperature_2m`)
       .then(response => response.json())
       .then(data => {
+
+        // Je défini la valeur que je souhaite récupérer, et je l'affiche sur le DOM avec la fonction innerHTML
         temp = data.current.temperature_2m;
         weatherDiv.innerHTML = `<p>Température à ${selectedCity.name} : </p><p id="weather">${temp} °C</p>`;
       })
