@@ -19,7 +19,6 @@ searchInput.addEventListener('keyup', ()=> {
   if (input.length > 0) {
     input = input[0].toUpperCase() + input.slice(1);
     filterCities();
-    console.log(input);
   } else {
     cityList.innerHTML = "";
   }
@@ -32,36 +31,33 @@ searchInput.addEventListener('keyup', ()=> {
 
 function filterCities() {
   cities.forEach(city => {
-    if (city.name.includes(input)) {
-      // cityList.innerHTML = ('');
-      cityList.innerHTML += (`<li class="city">${city.name}</li>`);
-    } 
-});
+      if (city.name.includes(input)) {
+        cityList.innerHTML = (`<li class="city">${city.name}</li>`);
+      }
+  })
 
 
   let citiesChoice = document.querySelectorAll('.city');
   
   citiesChoice.forEach(city => {
     city.addEventListener('click', () => {
+      city.classList.add('active');
       fetch('https://api.open-meteo.com/v1/forecast?latitude=48.8534,45.7485,43.297,44.8404,50.633&longitude=2.3488,4.8467,5.3811,-0.5805,3.0586&current=temperature_2m')
       .then(response => response.json())
       .then(data => {
-        weatherDiv.innerHTML = `<p>${cities[d].name} : ${data[d].current.temperature_2m} °C</p>`;
+        for (let m = 0; m < data.length; m++) {
+            weatherDiv.innerHTML = (`<p>Météo à ${city.textContent} : Température de ${data[m].current.temperature_2m}</p>`);
+        }
       })
       .catch(error => {
         return error;
       });
 
-      city.classList.add('active');
-
       });
-    })
-
-  };
+  });
+};
 
 // TODO : requête AJAX vers Open-Meteo
 
 
 // TODO : affichage météo dans le DOM
-
-// console.log(meteoData);
