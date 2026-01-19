@@ -10,65 +10,61 @@ const searchInput = document.getElementById("search");
 const cityList = document.getElementById("cityList");
 const weatherDiv = document.getElementById("weather");
 
-// TODO : écouter la saisie utilisateur (event input)
-
+// J'enregistre la saisie de l'utilisateur d'une lettre dans l'input 
 let input = "";
 
 searchInput.addEventListener('keyup', ()=> {
   input = searchInput.value;
+
+  // Je vérifie que le champs de saisie n'est pas vide
   if (input.length > 0) {
+
+    // Je transforme la première lettre en majuscule pour correspondre à mon array
     input = input[0].toUpperCase() + input.slice(1);
     filterCities();
-  } else {
-    cityList.innerHTML = "";
   }
 });
 
-// TODO : filtrer les villes selon la saisie
-// TODO : afficher la liste des villes correspondantes
-// TODO : gérer le clic sur une ville
-// TODO : gestion de la classe CSS active
-
+// Je défini une fonction qui sera appelé à chaque nouvelle saisie de l'utilisateur
 function filterCities() {
+
+  // Je réinitialise le HTML de ma liste de ville pour ne pas avoir de doublons
   cityList.innerHTML = "";
+
+  // Si la saisie de l'utilisateur correspond à une ville enregistrée, une nouvelle puce est créée pour afficher la ville
   cities.forEach(city => {
       if (city.name.includes(input)) {
         cityList.innerHTML += (`<li class="city">${city.name}</li>`);
       }
   });
 
-
+  // J'enregistre mes éléments portant la classe "city"
   let citiesChoice = document.querySelectorAll('.city');
-  
+  let temp = 0.0;
+
+  // J'enregistre l'évènement si l'utilisateur clique sur une ville proposée
   citiesChoice.forEach(city => {
     city.addEventListener('click', () => {
-      citiesChoice.forEach(city => city.classList.remove('active'));
+
+      // A chaque nouveau clic je supprime la classe "active" des éléments précédemment sélectionnés
+      citiesChoice.forEach(cityChoice => cityChoice.classList.remove('active'));
+      // Puis je réenregistre la classe "active" sur l'élément actuellmement
       city.classList.add('active');
 
-      fetch('https://api.open-meteo.com/v1/forecast?latitude=48.85,45.75,43.3,44.84,50.63&longitude=2.35,4.85,5.37,-0.57,3.06&current=temperature_2m')
+      // Je recherche 
+      let selectedCity = cities.find(browseCity => browseCity.name === city.textContent);
+      
+      // Je récupère les informations de l'API à chaque clic pour avoir les informations à jour
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${selectedCity.lat}&longitude=${selectedCity.lon}&current=temperature_2m`)
       .then(response => response.json())
       .then(data => {
-        console.log(data.length)
-        cities.forEach(city => {
-          for (let m = 0; m < data.length; m++) {
-            console.log(cities.indexOf('Paris'));
-            if (data[m].latitude == cities[m].lat) {
-              weatherDiv.innerHTML = `Météo pour ${city.textContent} : `
-            }
-          }
-
-        })
+        temp = data.current.temperature_2m;
+        weatherDiv.innerHTML = `<p>Température à ${selectedCity.name} : </p><p id="weather">${temp} °C</p>`;
       })
+      .catch(error => {
+          return error;
+    });
     })
   })
-
 };
-        
 
-    
-
-
-
-
-// TODO : requête AJAX vers Open-Meteo
-// TODO : affichage météo dans le DOM
